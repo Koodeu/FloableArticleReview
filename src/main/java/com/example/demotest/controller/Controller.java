@@ -2,7 +2,6 @@ package com.example.demotest.controller;
 
 
 import com.example.demotest.entity.Article;
-import com.example.demotest.services.ArticleWorkflowService;
 import com.example.demotest.services.ArticleWorkflowServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +25,10 @@ public class Controller {
         return articleWorkflowServiceImpl.getTasksForAssignee(assignee);
     }
 
+    @PostMapping("/decision")
+    public void decide(@RequestParam String articleProcessId, String decision){
+        articleWorkflowServiceImpl.decide(articleProcessId, decision);
+    }
 
     @GetMapping("/hello")
     public String print() {
