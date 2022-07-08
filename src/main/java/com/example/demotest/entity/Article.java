@@ -1,5 +1,6 @@
 package com.example.demotest.entity;
 
+import com.example.demotest.enums.Decision;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,17 +18,23 @@ public class Article {
 
 
 
-    private UUID articleId;
+    private UUID articleProcessID;
+
+    private UUID taskId;
     private String author;
     private String title;
     private String articleBody;
 
+    private String status;
+
     public Article(Task task) {
         Map<String , Object> articleVariables = task.getProcessVariables();
-        this.articleId = UUID.fromString(task.getProcessInstanceId());
+        this.articleProcessID = UUID.fromString(task.getProcessInstanceId());
+        this.taskId = UUID.fromString(task.getId());
         this.author = (String) articleVariables.get("author");
         this.title = (String) articleVariables.get("title");
         this.articleBody = (String) articleVariables.get("articleBody");
+        this.status = (String) articleVariables.get("status");
     }
 
 }

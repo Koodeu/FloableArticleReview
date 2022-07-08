@@ -9,4 +9,6 @@ public interface ArticleWorkflowService {
 
     List<Article> getTasksForAssignee(String assignee);
 
+    void decide(String taskId, String decision);
+
 }

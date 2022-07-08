@@ -31,8 +31,9 @@ public class ArticleWorkflowServiceImpl implements ArticleWorkflowService {
         variables.put("author", article.getAuthor());
         variables.put("title", article.getTitle());
         variables.put("articleBody", article.getArticleBody());
+        variables.put("status", "new");
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("articleReview", variables);
-        article.setArticleId(UUID.fromString(processInstance.getId()));
+        article.setArticleProcessID(UUID.fromString(processInstance.getId()));
         return article;
     }
 
@@ -43,12 +44,27 @@ public class ArticleWorkflowServiceImpl implements ArticleWorkflowService {
                 .list();
         return tasks.stream().map(task -> {
                     Map<String, Object> variables = taskService.getVariables(task.getId());
-                    return new Article((UUID.fromString(task.getId())), (String) variables.get("author"), (String) variables.get("title"),
-                            (String) variables.get("articleBody"));
+                    return new Article((UUID.fromString(
+                            task.getProcessInstanceId())),
+                            UUID.fromString(task.getId()),
+                            (String) variables.get("author"), (String) variables.get("title"),
+                            (String) variables.get("articleBody"), (String) variables.get("status"));
                 })
                 .collect(Collectors.toList());
-
     }
 
+    @Override
+    public void decide(String id, String decision) {
+        Task task = taskService.createTaskQuery()
+                .processInstanceId(id)
+                .includeProcessVariables()
+                .singleResult();
+        String taskId = task.getId();
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("status", decision);
+        taskService.complete(task.getId(), variables);
+
+    }
 }
 
