@@ -1,6 +1,7 @@
 package com.example.demotest.services;
 
 import com.example.demotest.entity.Article;
+import com.example.demotest.entity.Comment;
 
 import java.util.List;
 
@@ -14,5 +15,7 @@ public interface ArticleWorkflowService {
     List<Article> listOfNewArticles();
 
    List<Article> listOfArticlesByGivenAuthor(String authorName);
+
+   void addComment(Comment comment);
 
 }

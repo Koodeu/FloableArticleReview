@@ -2,6 +2,7 @@ package com.example.demotest.controller;
 
 
 import com.example.demotest.entity.Article;
+import com.example.demotest.entity.Comment;
 import com.example.demotest.services.ArticleWorkflowServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +42,13 @@ public class Controller {
     }
 
     @GetMapping("/author")
-    public List<Article> fetchArticlesByAuthor(@RequestParam String authorName){
+    public List<Article> fetchArticlesByAuthor(@RequestParam String authorName) {
         return articleWorkflowServiceImpl.listOfArticlesByGivenAuthor(authorName);
     }
 
+    @PostMapping("/addcomment")
+    public void addCommentToArticle(@RequestBody Comment comment) {
+        articleWorkflowServiceImpl.addComment(comment);
+    }
 
 }
