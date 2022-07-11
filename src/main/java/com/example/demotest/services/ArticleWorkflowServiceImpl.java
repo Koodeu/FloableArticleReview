@@ -66,5 +66,23 @@ public class ArticleWorkflowServiceImpl implements ArticleWorkflowService {
         taskService.complete(task.getId(), variables);
 
     }
+
+    @Override
+    public List<Article> listOfNewArticles() {
+        List<Task> tasks = taskService.createTaskQuery()
+                .includeProcessVariables()
+                .processVariableValueEquals("status", "new")
+                .list();
+        return tasks.stream().map(Article::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Article> listOfArticlesByGivenAuthor(String authorName) {
+        List<Task> tasks = taskService.createTaskQuery()
+                .includeProcessVariables()
+                .processVariableValueEquals("author", authorName)
+                .list();
+        return tasks.stream().map(Article::new).collect(Collectors.toList());
+    }
 }
 

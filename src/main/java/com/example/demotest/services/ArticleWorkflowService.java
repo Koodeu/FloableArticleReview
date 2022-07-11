@@ -11,4 +11,8 @@ public interface ArticleWorkflowService {
 
     void decide(String taskId, String decision);
 
+    List<Article> listOfNewArticles();
+
+   List<Article> listOfArticlesByGivenAuthor(String authorName);
+
 }
