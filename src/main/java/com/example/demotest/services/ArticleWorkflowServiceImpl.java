@@ -1,6 +1,7 @@
 package com.example.demotest.services;
 
 import com.example.demotest.entity.Article;
+import com.example.demotest.entity.Comment;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -83,6 +84,17 @@ public class ArticleWorkflowServiceImpl implements ArticleWorkflowService {
                 .processVariableValueEquals("author", authorName)
                 .list();
         return tasks.stream().map(Article::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public void addComment(Comment comment) {
+        String taskId = taskService.createTaskQuery()
+                .processInstanceId(comment.getProcessId())
+                .singleResult()
+                .getId();
+        taskService.addComment(taskId, comment.getProcessId(), comment.getCommentBody());
+        System.out.println(taskService.getTaskComments(taskId).get(0).getFullMessage());
+
     }
 }
 
